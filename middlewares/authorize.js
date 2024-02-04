@@ -15,8 +15,6 @@ const Errors = {
   },
 };
 
-
-
 /**
  * Middleware to validate logged in user
  * @type {import('express').RequestHandler}
@@ -30,10 +28,10 @@ const authorizeUser = (req, res, next) => {
     }
 
     let decoded;
+
     try {
       decoded = verifyJwtToken(token);
     } catch (error) {
-
       throw Errors.invalidToken;
     }
 
@@ -42,7 +40,7 @@ const authorizeUser = (req, res, next) => {
     }
 
     req.user = decoded;
-   
+
     next();
   } catch (error) {
     res.status(error.status || 403).json({

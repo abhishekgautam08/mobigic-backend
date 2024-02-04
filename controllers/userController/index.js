@@ -16,15 +16,23 @@ const signupUserController = async (req, res) => {
     }
 
     //Create a new User
-    await User.create({
+    const createdUser = await User.create({
       name,
       email,
       password,
     });
 
+    const payload = {
+      id: createdUser._id,
+      email: createdUser.email,
+      name: createdUser.name,
+    };
+
+    const token = generateJwtToken(payload);
+
     return res
       .status(201)
-      .json({ success: true, message: "User Succesfully Signin" });
+      .json({ success: true, token, message: "User Succesfully Signin" });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Some Error occured");
@@ -90,5 +98,5 @@ const whoAmIController = async (req, res) => {
 module.exports = {
   signupUserController,
   loginUserController,
-    whoAmIController,
+  whoAmIController,
 };
